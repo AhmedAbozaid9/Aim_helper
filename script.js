@@ -20,31 +20,29 @@ circles.css({
     height: 100,
     position: 'relative',
     margin: 'auto auto',
-    backgroundColor: 'green',
     transform: 'translate(-50%,-50%)',
 })
 //some variables that will track how many circles has been created, how many times the mouse has been clicked and how many times the player has aimed correctly
 let createdCircles = 0,
     clicks = 0,
     score = 0
-// a list to keep track of the positions of the current displayed circles
-let occupied = []
-
-function isIncluded(arr1,arr2) {
-    //takes a 2d array and a 1d array to check if the second array is inside the first.
-    let result = false
-    for(let arr of arr1){
-        let isFound = true
-        for(let idx in arr2){
-            if(arr[idx] !== arr2[idx]) isFound = false
-        }
-        if(isFound){
-            result = true
-            break
-        }
+    
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+    
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
     }
-    return result
+    return true;
 }
+
+function getRandomNumber(max) {
+    // a function that returns a random int between 0 and max - 1
+    return Math.floor(Math.random() * max)
+}
+
 function generatePositions() {
     //this function will generate a kind of grid for the circles
     const positions = []
@@ -57,22 +55,24 @@ function generatePositions() {
         positions.push(number)
     }
     // returning the values that are not in the occupied array
-    return percom.per(positions,2).filter((p) => !(occupied.includes(p)))
+    return percom.per(positions,2)
 }   
-function getRandomNumber(max) {
-    // a function that returns a random int between 0 and max - 1
-    return Math.floor(Math.random() * max)
-}
+
+// a list to keep track of the positions of the current displayed circles and another to keep track of the available positions
+let occupied = []
+let availablePositions = generatePositions()
+
 
 function createCircle() {
     //this function will be always called whenever the player clicks the screen or clicks any circle. it creates the position of the center of the circle.
-    let availablePositions = generatePositions()
     console.log(availablePositions)
     //get a random position from the available positions
     const idx = getRandomNumber(availablePositions.length)
     let position = availablePositions[idx]
-    //store the value of that index inside the occupied array
+    //store the value of that index inside the occupied array and remove it from the available positions
     occupied.push(position)
+    availablePositions = availablePositions.filter(p => !arraysEqual(position,p))
+    console.log(availablePositions)
     //create a circle and add it to the DOM
     const circle = $('<div></div>').addClass('circle').css({
         position: 'absolute',
@@ -92,8 +92,10 @@ circles.on('click', '.circle', function () {
     score++
     //return back the position of the removed circle since its available again
     const position = [parseInt($(this).css('left')), parseInt($(this).css('top'))]
-    occupied = occupied.filter((p) => p !== position)
     $(this).remove()
+    //remove the position from the occupied array and return it back to be an available position
+    occupied = occupied.filter(p => !arraysEqual(position,p))
+    availablePositions.push(position)
     createCircle()
 })
 //add an event listener to the document to calculate the total number of clicks
