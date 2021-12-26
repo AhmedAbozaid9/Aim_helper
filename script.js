@@ -101,6 +101,9 @@ circles.on('click', '.circle', function () {
 $(document).click(() => {
     clicks++
 })
-createCircle()
-createCircle()
-createCircle()
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Running the app 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    $('<h1></h1>').text('use your fucking laptop')
+   }
