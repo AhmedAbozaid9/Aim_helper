@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "browserfy": "^1.0.0",
+    "percom": "^1.1.3"
+  }
+}
