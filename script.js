@@ -105,5 +105,7 @@ $(document).click(() => {
 // Running the app 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    $('<h1></h1>').text('use your fucking laptop')
+    $('<h1></h1>').text('use your fucking laptop').css('color','fff')
+   } else {
+
    }
