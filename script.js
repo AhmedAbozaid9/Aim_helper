@@ -3,6 +3,10 @@ import percom from './permutation.js'
 //change the background and center the circles container
 $('body').css({
     backgroundColor: '#212121',
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: '32px',
+    fontFamily: 'sans-serif',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -19,7 +23,7 @@ circles.css({
     width: 100,
     height: 100,
     position: 'relative',
-    margin: 'auto auto',
+    margin: 'auto',
     transform: 'translate(-50%,-50%)',
 })
 //some variables that will track how many circles has been created, how many times the mouse has been clicked and how many times the player has aimed correctly
@@ -82,6 +86,7 @@ function createCircle() {
         backgroundColor: '#396EB0',
         borderRadius: '50%',
         transform: 'translate(-50%,-50%)',
+        cursor: 'pointer',
     })
     circles.append(circle)
     createdCircles++
@@ -104,8 +109,51 @@ $(document).click(() => {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Running the app 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-    $('<h1></h1>').text('use your fucking laptop').css('color','fff')
-   } else {
-
-   }
+// making a start button to appear once the app runs
+let startBtn = $('<div>Start</div>').css({
+    width: '120px',
+    height: '120px',
+    backgroundColor: '#396EB0',
+    display:'flex',
+    alignItems:'center',
+    justifyContent: 'center',
+    borderRadius: '50%',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%,-50%)',
+    cursor:'pointer',
+})
+startBtn.click(() => {
+    //remove the start button
+    startBtn.remove()
+    //create 3 circles
+    createCircle()
+    createCircle()
+    createCircle()
+    //start a timer 
+    let seconds = 60
+    const timer = $('<div></div>').css({
+        position : 'absolute',
+        top : 0,
+        right: 0,
+        backgroundColor: '#333',
+        width: '100px',
+        height: '60px',
+        lineHeight: '60px',
+        padding: 'auto',
+        
+    })
+    $('body').append(timer)
+    const counter = setInterval(() => {
+        timer.text(seconds)
+        seconds--
+        if(seconds < 0){
+            clearInterval(counter)
+            // remove everything on the screen
+            timer.remove()
+            circles.html('')
+        }
+    },1000)
+})
+$('body').append(startBtn)
