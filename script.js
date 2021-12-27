@@ -27,8 +27,7 @@ circles.css({
     transform: 'translate(-50%,-50%)',
 })
 //some variables that will track how many circles has been created, how many times the mouse has been clicked and how many times the player has aimed correctly
-let createdCircles = 0,
-    clicks = 0,
+let clicks = 0,
     score = 0
     
 function arraysEqual(a, b) {
@@ -89,7 +88,6 @@ function createCircle() {
         cursor: 'pointer',
     })
     circles.append(circle)
-    createdCircles++
 }
 //add an event listener to all the circles that will be created inside the 'circles'
 circles.on('click', '.circle', function () {
@@ -110,7 +108,7 @@ $(document).click(() => {
 // Running the app 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // making a start button to appear once the app runs
-let startBtn = $('<div>Start</div>').css({
+let startBtn = $('<div>Press</div>').css({
     width: '120px',
     height: '120px',
     backgroundColor: '#396EB0',
@@ -124,6 +122,7 @@ let startBtn = $('<div>Start</div>').css({
     transform: 'translate(-50%,-50%)',
     cursor:'pointer',
 })
+$('body').append(startBtn)
 startBtn.click(() => {
     //remove the start button
     startBtn.remove()
@@ -132,17 +131,15 @@ startBtn.click(() => {
     createCircle()
     createCircle()
     //start a timer 
-    let seconds = 60
-    const timer = $('<div></div>').css({
+    let seconds = 59
+    const timer = $('<div>60</div>').css({
         position : 'absolute',
         top : 0,
         right: 0,
         backgroundColor: '#333',
         width: '100px',
         height: '60px',
-        lineHeight: '60px',
-        padding: 'auto',
-        
+        lineHeight: '60px',        
     })
     $('body').append(timer)
     const counter = setInterval(() => {
@@ -153,7 +150,20 @@ startBtn.click(() => {
             // remove everything on the screen
             timer.remove()
             circles.html('')
+            displayScore()
+            $('body').append(startBtn)
         }
     },1000)
 })
-$('body').append(startBtn)
+
+function displayScore() {
+    let finalScore = score * 200 - (clicks - score) * 75
+    let result = $('<div></div>').html('Your score was <b>'+  finalScore  + '</b> points.').css({
+        position : 'absolute',
+        top : '10px',
+        backgroundColor: '#333',
+        padding:'10px 20px',
+        borderRadius: '5px',
+    })
+    $('body').append(result)
+}
