@@ -119,7 +119,11 @@ $(document).click(() => {
 // Running the app
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // making a start button to appear once the app runs
+<<<<<<< HEAD
 let startBtn = $("<div>press</div>").css({
+=======
+let startBtn = $("<div>Press</div>").css({
+>>>>>>> 813c837a7516eaa194b146a7bbcc12fbb498fce9
   width: "120px",
   height: "120px",
   backgroundColor: "#396EB0",
@@ -136,7 +140,10 @@ let startBtn = $("<div>press</div>").css({
 $("body").append(startBtn);
 startBtn.click(() => {
   //remove the start button
+<<<<<<< HEAD
   console.log("clicked");
+=======
+>>>>>>> 813c837a7516eaa194b146a7bbcc12fbb498fce9
   startBtn.remove();
   //create 3 circles
   createCircle();
