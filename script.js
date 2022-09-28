@@ -1,5 +1,5 @@
+// using the percom library to get all the positions using permutations
 import percom from "./permutation.js";
-
 //change the background and center the circles container
 $("body").css({
   backgroundColor: "#212121",
@@ -96,9 +96,6 @@ function createCircle() {
 }
 //add an event listener to all the circles that will be created inside the 'circles'
 circles.on("click", ".circle", function () {
-  const gunSound = new Audio("./audio/gunSound.mp3");
-
-  gunSound.play();
   score++;
   //return back the position of the removed circle since its available again
   const position = [
@@ -119,11 +116,7 @@ $(document).click(() => {
 // Running the app
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // making a start button to appear once the app runs
-<<<<<<< HEAD
-let startBtn = $("<div>press</div>").css({
-=======
 let startBtn = $("<div>Press</div>").css({
->>>>>>> 813c837a7516eaa194b146a7bbcc12fbb498fce9
   width: "120px",
   height: "120px",
   backgroundColor: "#396EB0",
@@ -140,17 +133,13 @@ let startBtn = $("<div>Press</div>").css({
 $("body").append(startBtn);
 startBtn.click(() => {
   //remove the start button
-<<<<<<< HEAD
-  console.log("clicked");
-=======
->>>>>>> 813c837a7516eaa194b146a7bbcc12fbb498fce9
   startBtn.remove();
   //create 3 circles
   createCircle();
   createCircle();
   createCircle();
   //start a timer
-  let seconds = 59;
+  let seconds = 0;
   const timer = $("<div>60</div>").css({
     position: "absolute",
     top: 0,
