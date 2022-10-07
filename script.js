@@ -18,10 +18,10 @@ $("body").css({
 });
 //an html div element that will contain all the generated circles
 const circles = $(".circles");
-//add some styling to the circles conteainer
+//add some styling to the circles container
 circles.css({
   width: 100,
-  height: 100,
+  height: 100 ,
   position: "relative",
   margin: "auto",
   transform: "translate(-50%,-50%)",
