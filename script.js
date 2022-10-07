@@ -1,8 +1,10 @@
 // using the percom library to get all the positions using permutations
 import percom from "./permutation.js";
+
 //change the background and center the circles container
-$("body").css({
-  backgroundColor: "#212121",
+const $body = $("body");
+$body.css({
+  backgroundColor: "#181818",
   color: "#fff",
   textAlign: "center",
   fontSize: "32px",
@@ -16,7 +18,7 @@ $("body").css({
   height: "100vh",
   overflow: "hidden",
 });
-//an html div element that will contain all the generated circles
+// a html div element that will contain all the generated circles
 const circles = $(".circles");
 //add some styling to the circles container
 circles.css({
@@ -35,7 +37,7 @@ function arraysEqual(a, b) {
   if (a == null || b == null) return false;
   if (a.length !== b.length) return false;
 
-  for (var i = 0; i < a.length; ++i) {
+  for (let i = 0; i < a.length; ++i) {
     if (a[i] !== b[i]) return false;
   }
   return true;
@@ -70,7 +72,7 @@ let occupied = [];
 let availablePositions = generatePositions();
 
 function createCircle() {
-  //this function will be always called whenever the player clicks the screen or clicks any circle. it creates the position of the center of the circle.
+  //this function will always be called whenever the player clicks the screen or clicks any circle. it creates the position of the center of the circle.
 
   //get a random position from the available positions
   const idx = getRandomNumber(availablePositions.length);
@@ -95,28 +97,60 @@ function createCircle() {
   circles.append(circle);
 }
 //add an event listener to all the circles that will be created inside the 'circles'
-circles.on("click", ".circle", function () {
+$body.on("click", function (e) {
   score++;
-  //return back the position of the removed circle since its available again
-  const position = [
-    parseInt($(this).css("left")),
-    parseInt($(this).css("top")),
-  ];
-  $(this).remove();
-  //remove the position from the occupied array and return it back to be an available position
-  occupied = occupied.filter((p) => !arraysEqual(position, p));
-  createCircle();
-  availablePositions.push(position);
+  //return the position of the removed circle since its available again
+  if(e.target.matches(".circle")){
+    const position = [
+      parseInt($(e.target).css("left")),
+      parseInt($(e.target).css("top")),
+    ];
+    $(e.target).remove();
+    //remove the position from the occupied array and return it back to be an available position
+    occupied = occupied.filter((p) => !arraysEqual(position, p));
+    createCircle();
+    availablePositions.push(position);
+  }
+
+  if(e.target.matches(".start")){
+    //remove the start button
+    startBtn.remove();
+    //create 3 circles
+    createCircle();
+    createCircle();
+    createCircle();
+    //start a timer
+    let seconds = 59;
+    const timer = $("<div>60</div>").css({
+      position: "absolute",
+      top: 0,
+      right: 0,
+      backgroundColor: "#333",
+      width: "100px",
+      height: "60px",
+      lineHeight: "60px",
+    });
+    $body.append(timer);
+    const counter = setInterval(() => {
+      timer.text(seconds);
+      seconds--;
+      if (seconds < 0) {
+        clearInterval(counter);
+        // remove everything on the screen
+        timer.remove();
+        circles.html("");
+        displayScore();
+        $body.append(startBtn);
+      }
+    }, 1000);
+  }
+
 });
 //add an event listener to the document to calculate the total number of clicks
-$(document).click(() => {
-  clicks++;
-});
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Running the app
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // making a start button to appear once the app runs
-let startBtn = $("<div>Press</div>").css({
+let startBtn = $("<div>Press</div>").addClass("start").css({
   width: "120px",
   height: "120px",
   backgroundColor: "#396EB0",
@@ -130,39 +164,7 @@ let startBtn = $("<div>Press</div>").css({
   transform: "translate(-50%,-50%)",
   cursor: "pointer",
 });
-$("body").append(startBtn);
-startBtn.click(() => {
-  //remove the start button
-  startBtn.remove();
-  //create 3 circles
-  createCircle();
-  createCircle();
-  createCircle();
-  //start a timer
-  let seconds = 0;
-  const timer = $("<div>60</div>").css({
-    position: "absolute",
-    top: 0,
-    right: 0,
-    backgroundColor: "#333",
-    width: "100px",
-    height: "60px",
-    lineHeight: "60px",
-  });
-  $("body").append(timer);
-  const counter = setInterval(() => {
-    timer.text(seconds);
-    seconds--;
-    if (seconds < 0) {
-      clearInterval(counter);
-      // remove everything on the screen
-      timer.remove();
-      circles.html("");
-      displayScore();
-      $("body").append(startBtn);
-    }
-  }, 1000);
-});
+$body.append(startBtn);
 
 function displayScore() {
   let finalScore = score * 200 - (clicks - score) * 75;
@@ -175,5 +177,5 @@ function displayScore() {
       padding: "10px 20px",
       borderRadius: "5px",
     });
-  $("body").append(result);
+  $body.append(result);
 }
